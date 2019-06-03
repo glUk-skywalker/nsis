@@ -1,18 +1,27 @@
 package nsis
 
-import (
-	"fmt"
-	"os"
-)
+import "fmt"
 
-func Init(path string) (NSIS, error) {
-	var installer NSIS
+func InitInstaller(path string) (Installer, error) {
+	var installer Installer
 
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return installer, fmt.Errorf("installer doesn't exist: %s", err)
+	if !FileExists(path) {
+		return installer, fmt.Errorf("file doesn't exist: %s", path)
 	}
 
-	installer.installerPath = path
+	installer.path = path
 
 	return installer, nil
+}
+
+func InitUninstaller(path string) (Uninstaller, error) {
+	var uninstaller Uninstaller
+
+	if !FileExists(path) {
+		return uninstaller, fmt.Errorf("file doesn't exist: %s", path)
+	}
+
+	uninstaller.path = path
+
+	return uninstaller, nil
 }
